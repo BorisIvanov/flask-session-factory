@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='flask-session-factory',
-    version='0.1',
+    version='0.1.1',
     url='https://github.com/BorisIvanov/flask-session-factory',
     license='MIT',
     author='Boris Ivanov',
