@@ -11,8 +11,10 @@ class CookielessSession(CoreSession):
         self.app.before_request_funcs.setdefault(None, []).append(self.before_request)
 
     def before_request(self):
+        if '/'+request.endpoint == self.app.static_url_path:
+            return
         if self.param_name not in request.args:
-            values = request.args.__dict__
+            values = request.args.to_dict()
             values[self.param_name] = session.sid
             return redirect(url_for(request.endpoint, **values), code=307)
 
