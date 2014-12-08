@@ -11,6 +11,8 @@ class CookielessSession(CoreSession):
         self.app.before_request_funcs.setdefault(None, []).append(self.before_request)
 
     def before_request(self):
+        if not request.endpoint:
+            return
         if '/'+request.endpoint == self.app.static_url_path:
             return
         if self.param_name not in request.args:

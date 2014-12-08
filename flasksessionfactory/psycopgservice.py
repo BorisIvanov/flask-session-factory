@@ -26,11 +26,12 @@ class PsycopgService(object):
     def get(self, sid):
         conn = g.conn
         cur = conn.cursor(cursor_factory=DictCursor)
-        query_result = cur.execute('SELECT * FROM gp_session WHERE sid = %(sid)s::varchar', dict(sid=sid))
+        cur.execute('SELECT * FROM gp_session WHERE sid = %(sid)s::varchar', dict(sid=sid))
+        query_result = cur.fetchall()
         cur.close()
 
         session = SessionItem(sid=sid)
         if query_result:
             for item in query_result:
-                session[item.key] = item.val
+                session[item['key']] = item['value']
         return session
