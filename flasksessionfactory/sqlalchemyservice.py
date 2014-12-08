@@ -29,7 +29,8 @@ class SqlAlchemyService(object):
                                         'key': Column('key', Text),
                                         'val': Column('value', Text),
                                         '__table_args__': (PrimaryKeyConstraint('sid', 'key'), {'useexisting': True}),
-                                    })
+                                        })
+            #self.model_class.create(self.core_session.db.engine, checkfirst=True)
         return self.model_class
 
     def save(self, session):
@@ -41,7 +42,7 @@ class SqlAlchemyService(object):
             item.key = key
             item.val = value
             self.core_session.db.session.add(item)
-        self.core_session.db.session.commit()
+        self.core_session.db.session.flush()
 
     def get(self, sid):
         model_class = self.get_model()
@@ -49,7 +50,7 @@ class SqlAlchemyService(object):
 
         if self.core_session.app.config[FlaskSessionFabric.OWN_GROUP_KEY][FlaskSessionFabric.CREATE_DB]:
             self.core_session.db.create_all()
-            self.core_session.db.session.commit()
+            self.core_session.db.session.flush()
         query_result = model_class.query.filter_by(sid=sid).all()
         session = SessionItem(sid=sid)
         for item in query_result:
