@@ -6,6 +6,7 @@ from .coresession import CoreSession
 class CookielessSession(CoreSession):
     def init(self):
         from . import FlaskSessionFabric
+
         self.param_name = self.app.config[FlaskSessionFabric.OWN_GROUP_KEY][FlaskSessionFabric.PARAM_NAME_COOKIE_LESS]
         self.app.template_context_processors[None].append(self.override_url_for)
         self.app.before_request_funcs.setdefault(None, []).append(self.before_request)
@@ -13,7 +14,7 @@ class CookielessSession(CoreSession):
     def before_request(self):
         if not request.endpoint:
             return
-        if '/'+request.endpoint == self.app.static_url_path:
+        if '/' + request.endpoint == self.app.static_url_path:
             return
         if self.param_name not in request.args:
             values = request.args.to_dict()

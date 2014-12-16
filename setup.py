@@ -19,7 +19,7 @@ setup(
     install_requires=[
         'Flask>=0.10.1',
         'SQLAlchemy>=0.9.8',
-		'Flask-SQLAlchemy==2.0',
+        'Flask-SQLAlchemy==2.0',
     ],
     classifiers=[
         'Environment :: Web Environment',

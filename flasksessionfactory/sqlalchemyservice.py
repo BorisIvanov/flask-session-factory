@@ -14,7 +14,7 @@ class SqlAlchemyService(object):
             # __tablename__ = 'el_session'
             # sid = Column('sid', String(200))
             # date = Column('date', DateTime, default=func.now())
-            #     key = Column('key', Text)
+            # key = Column('key', Text)
             #     val = Column('value', Text)
             #     __table_args__ = (PrimaryKeyConstraint(sid, key), {'useexisting': True})
             #self.model_class = SqlAlchemySession
@@ -29,7 +29,7 @@ class SqlAlchemyService(object):
                                         'key': Column('key', Text),
                                         'val': Column('value', Text),
                                         '__table_args__': (PrimaryKeyConstraint('sid', 'key'), {'useexisting': True}),
-                                        })
+                                    })
             #self.model_class.create(self.core_session.db.engine, checkfirst=True)
         return self.model_class
 
