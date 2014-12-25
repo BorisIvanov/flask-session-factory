@@ -1,3 +1,4 @@
+import os
 from flask import g
 from psycopg2.extras import DictCursor
 
@@ -5,8 +6,21 @@ from .sessionitem import SessionItem
 
 
 class PsycopgService(object):
-    def __init__(self, core_session):
-        None
+    def __init__(self, core_session, flask_app):
+        self.env_name = 'FLASK_SESSION_FACTORY_PSYCOPG_SERVICE_TABLE_EXIST'
+        if os.environ.get(self.env_name) is not None:
+            return
+
+        conn = flask_app.app_ctx_globals_class.pool.getconn()
+        conn.autocommit = True
+        try:
+            with conn.cursor() as curs:
+                curs.execute('create table if not exists gp_session (sid varchar(256), key text, value text)')
+        except Exception as e:
+            flask_app.logger.error(e)
+        finally:
+            flask_app.app_ctx_globals_class.pool.putconn(conn)
+        os.environ[self.env_name] = '1'
 
     def save(self, session):
         item_list = []

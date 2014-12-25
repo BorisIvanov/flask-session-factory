@@ -18,5 +18,5 @@ class FlaskSessionFabric(object):
         service_provider_class = FlaskSessionFabric.get_class(
             app.config[FlaskSessionFabric.OWN_GROUP_KEY][FlaskSessionFabric.SERVICE_PROVIDER])
         result = session_interface_class(app, db)
-        result.session_service = service_provider_class(result)
+        result.session_service = service_provider_class(result, app)
         return result
