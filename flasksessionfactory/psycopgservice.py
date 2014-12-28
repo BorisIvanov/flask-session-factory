@@ -15,7 +15,11 @@ class PsycopgService(object):
         conn.autocommit = True
         try:
             with conn.cursor() as curs:
-                curs.execute('create table if not exists gp_session (sid varchar(256), key text, value text)')
+                curs.execute('''create table if not exists gp_session (
+                sid varchar(256),
+                time timestamp not null default (now() at time zone 'utc'),
+                key text,
+                value text)''')
         except Exception as e:
             flask_app.logger.error(e)
         finally:
